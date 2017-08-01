@@ -22,3 +22,21 @@ React.js认为所有的状态都应该由state控制，只要类似于`<input />
     }
 
 在CommentApp中给CommentInput传入一个`onSubmit`属性，这个属性时**CommentApp自己**的一个方法`handleSubmitComment`。这样CommentInput就可以调用`this.props.onSubmit()`把数据传给`CommentApp`
+
+
+> 不依赖DOM操作的组件启动的操作都可以放在`componentWillMount`中进行
+
+## 组件的私有方法都用 `_` 开头 ##
+## 所有的事件监听方法都用`handle` 开头 ；把事件监听方法传给组件的时候，属性名用`on`开头##
+
+> 组件内容编写顺序如下：
+> 
+1. static开头的类属性，如`defaultProps`，`propTypes`。
+2. 构造函数，`constructor`、
+3. getter/setter。
+4. 组件声明周期
+5. `_` 开头的私有方法。
+6. 事件监听方法， `handle*`。
+7. `render*`开头的方法，有时候render()方法里面的内容会分开到不同函数里面进行，这些函数都以`render*`开头。
+8. `render()` 方法。
+
