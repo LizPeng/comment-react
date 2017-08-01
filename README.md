@@ -40,3 +40,11 @@ React.js认为所有的状态都应该由state控制，只要类似于`<input />
 7. `render*`开头的方法，有时候render()方法里面的内容会分开到不同函数里面进行，这些函数都以`render*`开头。
 8. `render()` 方法。
 
+
+##　个人写reducer文件的习惯
+
+1. 定义action types
+2. 编写reducer
+3. 跟这个reducer的action creators
+
+> 了解MVC/MVP架构模式的同学应该可以类比过去，Dum组件就是View（负责渲染），Smart组件就是Controller（Presenter），State其实有点类似Model。

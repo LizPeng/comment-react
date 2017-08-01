@@ -2,14 +2,49 @@ import React, { Component,PropTypes } from 'react'
 
 class CommentInput extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func
+    username: PropTypes.any,
+    onSubmit: PropTypes.func,
+    onUserNameInputBlur: PropTypes.func
   }
-  //初始化一个state来保存username和content
-  constructor(){
-    super()
+  /*
+    原来CommentInput需要从LocalStorage中获取username字段，现在让它从props里面去取
+
+    原来用户名的输入框blur的时候保存username到LocalStorage的行为也通过props.onUserNameInputBlur传递到上层去做。
+    CommentInput所有的渲染操作都只依赖于props完成
+  */ 
+  static defaultProps = {
+    username: ''
+  }
+  
+  constructor(props){
+    super(props)
     this.state = {
-      username:'',
+      username:props.username ,//从props上取username字段
       content:''
+    }
+  }
+  // componentWillMount(){
+  //   this._loadUsername()
+  // }
+  componentDidMount(){
+    this.textarea.focus()
+  }
+
+  // _loadUsername(){
+  //   //取出username
+  //   const username = localStorage.getItem('username')
+  //   if(username){//判断是否存在username
+  //     this.setState({'username':username}) 
+  //   }
+  // }
+  // _saveUsername(username){
+  //   localStorage.setItem('username', username)
+  // }
+  
+  handleUsernameBlur(event){
+    if(this.props.onUserNameInputBlur){
+      //this._saveUsername(event.target.value)
+      this.props.onUserNameInputBlur(event.target.value)
     }
   }
   handleUsernameChange(event){
@@ -25,34 +60,16 @@ class CommentInput extends Component {
 
   handleSubmit(){
     if(this.props.onSubmit){//判断props中书否传入了onSubmit属性。
-      const { username, content } = this.state
-      //有的话就调用该函数，并且把用户名和评论数据传入该函数
-      this.props.onSubmit({ username, content }) 
+      //有的话就调用该函数，并且把用户名和评论,评论时间等数据传入该函数
+      this.props.onSubmit({ 
+        username:this.state.username, 
+        content: this.state.content,
+        createdTime: +new Date() }) 
     }
     //清空用户输入的评论内容
     this.setState({ content: '' })
   }
 
-  _saveUsername(username){
-    localStorage.setItem('username', username)
-  }
-  _loadUsername(){
-    //取出username
-    const username = localStorage.getItem('username')
-    if(username){//判断是否存在username
-      this.setState({'username':username}) 
-    }
-  }
-  handleUsernameBlur(event){
-    this._saveUsername(event.target.value)
-  }
-
-  componentWillMount(){
-    this._loadUsername()
-  }
-  componentDidMount(){
-    this.textarea.focus()
-  }
   render() {
     return (
      <div className="comment-input" >
